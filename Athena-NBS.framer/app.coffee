@@ -41,5 +41,11 @@ for child, i in situations.subLayers
 		height: 0
 	}
 
+test = new nbs.NodeLines
+print test.html
+
+nodeLinks = []
 for child, i in nbs.listeners
-	print child.x
+	nodeLinks.push new nbs.NodeLink 
+		x: child.screenFrame.x + child.width - nbs.borderradius
+		y: child.screenFrame.y + child.height/2 - nbs.borderradius

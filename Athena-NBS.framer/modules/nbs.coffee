@@ -8,6 +8,33 @@ exports.secondary = "#CC0026"
 
 exports.listeners = []
 
+class exports.NodeLines extends Layer
+	constructor: (@options={}) ->
+
+		_.defaults @options,
+			backgroundColor: null
+			html: '
+			<svg width="686" height="358" xmlns="http://www.w3.org/2000/svg">
+			  <path d="M1 357C201 357 485 1 685 1" stroke="#CC0026" stroke-width="2" fill="none" fill-rule="evenodd"/>
+			</svg>
+			'
+
+		super @options
+
+class exports.NodeLink extends Layer
+	constructor: (@options={}) ->
+
+		_.defaults @options,
+			backgroundColor: exports.secondary
+			borderRadius: exports.borderradius
+			width: 2*exports.borderradius
+			height: 2*exports.borderradius
+
+		super @options
+
+
+
+
 class Listener extends Layer
 	constructor: (@options={}) ->
 
