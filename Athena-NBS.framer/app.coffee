@@ -1,6 +1,10 @@
+# Use desktop cursor
+document.body.style.cursor = "auto"
+
 nbs = require "nbs"
 
-Screen.backgroundColor = "white"
+
+Screen.backgroundColor = nbs.primaryLight
 
 situations = new Layer
 	backgroundColor: null
