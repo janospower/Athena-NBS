@@ -9,10 +9,6 @@ situations = new Layer
 before = new nbs.Situation
 	parent: situations
 before.label.text = "Before Start"
-driveTo = new nbs.Brick
-	parent: before
-mobile = new nbs.Brick
-	parent: before
 
 arrive = new nbs.Situation
 	parent: situations
@@ -31,8 +27,3 @@ for child, i in situations.subLayers
 		width: 0
 		height: 0
 	}
-	for i in [1...child.children.length]
-		lastHeight = child.children[i].height
-		nextChild = child.children[i+1]
-		if nextChild?
-			nextChild.y = i*lastHeight

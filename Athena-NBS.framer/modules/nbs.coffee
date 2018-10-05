@@ -1,25 +1,7 @@
 exports.padding = 15
 exports.situationWidth = 300
 
-class exports.Wrapper extends Layer
-	constructor: (@options={}) ->
-
-		_.defaults @options,
-			backgroundColor: "transparent"
-			x: 0
-			y: 3*exports.padding
-			animationOptions:
-				time:0.2
-				curve: Bezier.ease
-
-		super @options
-
-		@.states.collapsed=
-			y: 2*exports.padding
-			height: 0
-			opacity: 0
-
-class exports.Brick extends Layer
+class Brick extends Layer
 	constructor: (@options={}) ->
 
 		_.defaults @options,
@@ -27,12 +9,9 @@ class exports.Brick extends Layer
 			height: 100
 			width: exports.situationWidth
 			x: 0
-			y: 3*exports.padding
-			animationOptions:
-				time:0.2
-				curve: Bezier.ease
 
 		@label = new TextLayer
+			text: @options.title
 			fontSize: 12
 			color: "black"
 			x: exports.padding
@@ -42,36 +21,71 @@ class exports.Brick extends Layer
 
 		@label.parent = @
 
+
+
+
+
+class Container extends Layer
+	constructor: (@options={}) ->
+
+		_.defaults @options,
+			backgroundColor: "transparent"
+			y: 3*exports.padding
+			animationOptions:
+				time:0.2
+				curve: Bezier.ease
+
+		super @options
+
 		@.states.collapsed=
-			y: 2*exports.padding
 			height: 0
 			opacity: 0
 
+
+
+
+
 class exports.Situation extends Layer
-	 constructor: (@options={}) ->
+	constructor: (@options={}) ->
 
-		 @label = new TextLayer
-				text: "Event Name"
-				fontSize: 16
-				color: "white"
-				x: exports.padding
-				y: exports.padding
+		@label = new TextLayer
+			text: "Event Name"
+			fontSize: 16
+			color: "white"
+			x: exports.padding
+			y: exports.padding
+
+		@container = new Container
+
+		@tri = new Layer
 
 
-		 _.defaults @options,
-				backgroundColor: "blue"
-				height: 4*exports.padding
-				width: exports.situationWidth
-				borderRadius: 4
-				x: 2*exports.padding
-				y: 2*exports.padding
+		_.defaults @options,
+			backgroundColor: "blue"
+			height: 4*exports.padding
+			width: exports.situationWidth
+			borderRadius: 4
+			x: 2*exports.padding
+			y: 2*exports.padding
 
-		 super @options
+		super @options
 
-		 @label.parent = @
+		bricks = []
+		for i in [0...4]
+			bricks.push new Brick
+				y: i*100
+				parent: @container
+				title: "Brick " + i
+		bricks.push new Brick
+			y: i*100
+			parent: @container
+			title: "+ Add new brick"
 
-		 @.onClick @Toggle
+		@label.parent = @
+		@container.parent = @
+		@tri.parent = @
 
-	 Toggle: =>
-			for i in [1...@.children.length]
-				@.children[i].stateCycle "collapsed", "default"
+		@tri.onClick @Toggle
+
+	Toggle: =>
+		@container.stateCycle "collapsed", "default"
