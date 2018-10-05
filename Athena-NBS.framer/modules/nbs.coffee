@@ -6,6 +6,8 @@ exports.primary = "#00203D"
 exports.primaryLight = "#4D6377"
 exports.secondary = "#CC0026"
 
+exports.listeners = []
+
 class Listener extends Layer
 	constructor: (@options={}) ->
 
@@ -14,10 +16,20 @@ class Listener extends Layer
 			borderRadius: exports.borderradius
 			borderWidth: 1
 			borderColor: exports.primary
-			width: exports.situationWidth
-			height: 50
+			width: exports.situationWidth - 2*exports.padding
+			height: 40
+			x: exports.padding
+			y: 3*exports.padding
 
 		super @options
+
+		@label = new TextLayer
+			parent: @
+			text: "Event Listener"
+			fontSize: 12
+			color: "black"
+			x: exports.padding
+			y: exports.padding
 
 class Brick extends Layer
 	constructor: (@options={}) ->
@@ -27,6 +39,8 @@ class Brick extends Layer
 			height: 100
 			width: exports.situationWidth
 			x: 0
+			borderWidth: 1
+			borderColor: exports.secondary
 
 		@label = new TextLayer
 			text: @options.title
@@ -56,6 +70,8 @@ class Container extends Layer
 		super @options
 
 		@.states.collapsed=
+			y: 3*exports.padding
+			scaleY: 0
 			height: 0
 			opacity: 0
 
@@ -91,18 +107,19 @@ class exports.Situation extends Layer
 			parent: @
 
 		bricks = []
-		for i in [0...4]
+		for child, i in @options.nodes
 			bricks.push new Brick
 				y: i*100
 				parent: @container
-				title: "Brick " + i
+				title: child
 		bricks.push new Brick
 			y: i*100
 			parent: @container
 			title: "+ Add new brick"
 
-		@listener = new Listener
-			parent: @
+		exports.listeners.push new Listener
+			parent: bricks[i-1]
+			name: "Listener"
 
 		@tri = new Layer
 			parent: @
