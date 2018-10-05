@@ -13,9 +13,11 @@ class exports.NodeLines extends Layer
 
 		_.defaults @options,
 			backgroundColor: null
+			width: 2*exports.padding
+			y: 0
 			html: '
-			<svg width="686" height="358" xmlns="http://www.w3.org/2000/svg">
-			  <path d="M1 357C201 357 485 1 685 1" stroke="#CC0026" stroke-width="2" fill="none" fill-rule="evenodd"/>
+			<svg>
+			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 0 '+ 45 +' 0" stroke="#CC0026" stroke-width="2" fill="none" />
 			</svg>
 			'
 
