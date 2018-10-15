@@ -9,6 +9,14 @@ exports.secondary = "#CC0026"
 exports.listeners = []
 exports.nodeLinks = []
 
+drawSVG = (x1,y1,x2,y2) ->
+	svg = '
+	<svg>
+		<path d="M'+ "#{x1} #{y1}" +' C '+" #{x1+((x2-x1)*0.5)} #{y1} #{x1+((x2-x1)*0.5)} #{y2} #{x2} #{y2}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
+	</svg>
+	'
+	return svg
+
 class exports.NodeLines extends Layer
 	constructor: (@options={}) ->
 
@@ -19,14 +27,10 @@ class exports.NodeLines extends Layer
 			animationOptions:
 				time:0.2
 				curve: Bezier.ease
-			html: '
-			<svg>
-			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 '+ "#{30}" +' 45 '+ "#{30}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
-			</svg>
-			'
-
+			html: drawSVG(@options.x1,@options.y1,@options.x2,50)
 		super @options
 
+		@x2 = @options.x2
 		@.states.collapsed=
 			y: 3*exports.padding
 			scaleY: 0
@@ -187,9 +191,13 @@ class exports.Situation extends Layer
 
 		@nodeLine = new exports.NodeLines
 			parent : @options.p
-			x: @.x + @.width - exports.padding
-			y: 2*exports.padding
-			yy: @brick.screenFrame.y + @brick.height/2 - exports.padding
+			x: 0#@.x + @.width - exports.padding
+			y: 0#2*exports.padding
+			width: screen.width
+			height: screen.height
+			y1: @brick.screenFrame.y + @brick.height/2 + exports.padding
+			x1: @.x + @.width - exports.padding
+			x2: @.x + @.width + 2*exports.padding
 
 		exports.nodeLinks.push @nodeLine
 
@@ -232,15 +240,11 @@ class exports.DragHandle extends Layer
 			that.x = @.x - that.width + exports.padding + 20
 			that.y = @.y - exports.padding
 			that.bringToFront()
-			yy = that.brick.screenFrame.y + that.brick.height/2 - exports.padding
+			y1 = that.brick.screenFrame.y + that.brick.height/2 + exports.padding
+			x1 = that.brick.screenFrame.x + that.brick.width - exports.padding
+			x2 = that.nodeLine.x2
 			xx = that.brick.screenFrame.x + that.brick.width
-			that.nodeLine.html = '
-			<svg>
-			  <path d="M0 '+ "#{yy}" +' C 20 '+ "#{yy}" +' 25 '+ "#{30}" +' 45 '+ "#{30}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
-			</svg>
-			'
-
-
+			that.nodeLine.html = drawSVG(x1,y1,x2,50)
 
 
 class exports.NewSituation extends Layer
