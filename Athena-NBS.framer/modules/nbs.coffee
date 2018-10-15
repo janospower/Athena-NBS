@@ -17,23 +17,11 @@ class exports.NodeLines extends Layer
 			y: 0
 			html: '
 			<svg>
-			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 0 '+ 45 +' 0" stroke="#CC0026" stroke-width="2" fill="none" />
+			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 '+ "#{55}" +' 45 '+ "#{55}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
 			</svg>
 			'
 
 		super @options
-
-class exports.NodeLink extends Layer
-	constructor: (@options={}) ->
-
-		_.defaults @options,
-			backgroundColor: exports.secondary
-			borderRadius: exports.borderradius
-			width: 2*exports.borderradius
-			height: 2*exports.borderradius
-
-		super @options
-
 
 
 
@@ -59,6 +47,7 @@ class Listener extends Layer
 			color: "black"
 			x: exports.padding
 			y: exports.padding
+
 
 class Brick extends Layer
 	constructor: (@options={}) ->
@@ -167,8 +156,22 @@ class exports.Situation extends Layer
 		@tri.states.collapsed=
 			rotation: -90
 
+		@nodeLinks = []
+		for child, i in exports.listeners
+			@nodeLinks.push new exports.NodeLines
+				x: @.x + @.width
+				yy: child.screenFrame.y + child.height/2
+
 		@tri.onClick @Toggle
+		@.onDrag @UpdateLinks
 
 	Toggle: =>
 		@container.stateCycle "collapsed", "default"
 		@tri.stateCycle "collapsed", "default"
+
+
+	UpdateLinks: ->
+		for child, i in exports.listeners
+			nodeLinks.push new exports.NodeLines
+				x: child.screenFrame.x + child.width
+				yy: child.screenFrame.y + child.height/2
