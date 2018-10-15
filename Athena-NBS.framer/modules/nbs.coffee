@@ -7,6 +7,7 @@ exports.primaryLight = "#4D6377"
 exports.secondary = "#CC0026"
 
 exports.listeners = []
+exports.nodeLinks = []
 
 class exports.NodeLines extends Layer
 	constructor: (@options={}) ->
@@ -15,13 +16,22 @@ class exports.NodeLines extends Layer
 			backgroundColor: null
 			width: 2*exports.padding
 			y: 0
+			animationOptions:
+				time:0.2
+				curve: Bezier.ease
 			html: '
 			<svg>
-			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 '+ "#{55}" +' 45 '+ "#{55}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
+			  <path d="M0 '+ "#{@options.yy}" +' C 20 '+ "#{@options.yy}" +' 25 '+ "#{30}" +' 45 '+ "#{30}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
 			</svg>
 			'
 
 		super @options
+
+		@.states.collapsed=
+			y: 3*exports.padding
+			scaleY: 0
+			height: 0
+			opacity: 0
 
 
 
@@ -79,13 +89,23 @@ class Container extends Layer
 	constructor: (@options={}) ->
 
 		_.defaults @options,
-			backgroundColor: "transparent"
+			backgroundColor: null
 			y: 3*exports.padding
 			animationOptions:
 				time:0.2
 				curve: Bezier.ease
 
 		super @options
+
+		@scrollComp = new ScrollComponent
+			parent: @
+			width: exports.situationWidth
+			backgroundColor: null
+			scrollHorizontal: false
+			overdrag: true
+
+		@scrollComp.mouseWheelEnabled = true
+
 
 		@.states.collapsed=
 			y: 3*exports.padding
@@ -128,16 +148,24 @@ class exports.Situation extends Layer
 		for child, i in @options.nodes
 			bricks.push new Brick
 				y: i*100
-				parent: @container
+				parent: @container.scrollComp.content
 				title: child
+
 		bricks.push new Brick
-			y: i*100
-			parent: @container
+			y: bricks.length*100
+			parent: @container.scrollComp.content
 			title: "+ Add new brick"
 
 		exports.listeners.push new Listener
-			parent: bricks[i-1]
+			parent: bricks[bricks.length-2]
 			name: "Listener"
+
+		@brick = bricks[bricks.length-2]
+
+		if (@container.scrollComp.content.height < 620)
+			@container.scrollComp.height = @container.scrollComp.content.height
+		else
+			@container.scrollComp.height = 620
 
 		@tri = new Layer
 			parent: @
@@ -156,11 +184,13 @@ class exports.Situation extends Layer
 		@tri.states.collapsed=
 			rotation: -90
 
-		@nodeLinks = []
-		for child, i in exports.listeners
-			@nodeLinks.push new exports.NodeLines
-				x: @.x + @.width
-				yy: child.screenFrame.y + child.height/2
+
+		@nodeLine = new exports.NodeLines
+			parent : @
+			x: @.width - exports.padding
+			yy: @brick.screenFrame.y + @brick.height/2 - exports.padding
+
+		exports.nodeLinks.push @nodeLine
 
 		@tri.onClick @Toggle
 		@.onDrag @UpdateLinks
@@ -168,10 +198,73 @@ class exports.Situation extends Layer
 	Toggle: =>
 		@container.stateCycle "collapsed", "default"
 		@tri.stateCycle "collapsed", "default"
+		@nodeLine.stateCycle "collapsed", "default"
 
 
 	UpdateLinks: ->
-		for child, i in exports.listeners
-			nodeLinks.push new exports.NodeLines
-				x: child.screenFrame.x + child.width
-				yy: child.screenFrame.y + child.height/2
+		@nodeLine.yy = @brick.screenFrame.y + @brick.height/2
+
+
+
+class exports.DragHandle extends Layer
+	constructor: (@options={}) ->
+
+		that = @options.p
+
+		_.defaults @options,
+			width: 20
+			height: 20
+			x: that.x + that.width - 20 - exports.padding
+			y: that.y + exports.padding
+			style:
+				"background" : "url(images/tri.svg)   no-repeat"
+				"background-position":"left center"
+				"background-size" : "contain"
+
+		super @options
+		print that.x
+		@.draggable.enabled = true
+		@.draggable.constraints = {
+			x: @.x
+			y: @.y
+			width: 0
+			height: 0
+		}
+		@.on Events.Move, ->
+			that.x = @.x - that.width + exports.padding + 20
+			that.y = @.y - exports.padding
+
+
+
+
+class exports.NewSituation extends Layer
+	constructor: (@options={}) ->
+
+		@label = new TextLayer
+			text: "New Situation"
+			fontSize: 16
+			color: "white"
+			x: 3*exports.padding
+			y: exports.padding
+
+
+
+		_.defaults @options,
+			backgroundColor: exports.primary
+			height: 3*exports.padding + exports.borderradius
+			width: exports.situationWidth
+			borderRadius: exports.borderradius
+			x: 2*exports.padding
+			y: 2*exports.padding
+
+		super @options
+
+		@label.parent = @
+
+		@container = new Container
+			parent: @
+
+		@newBrick = new Brick
+			y: 0
+			parent: @container
+			title: "+ Add new brick"

@@ -31,23 +31,10 @@ leave = new nbs.Situation
 	nodes: leaveBricks
 leave.label.text = "On Arrive"
 
+neu = new nbs.NewSituation
+	parent: situations
+
 for child, i in situations.subLayers
 	child.x = nbs.padding*2*(i+1) + i*nbs.situationWidth
-	child.draggable = true
-	child.draggable.constraints = {
-		x: child.x
-		y: child.y
-		width: 0
-		height: 0
-	}
-
-
-nodeLinks = []
-makeLinks = ->
-	nodeLinks = []
-	for child, i in nbs.listeners
-		nodeLinks.push new nbs.NodeLines
-			x: child.screenFrame.x + child.width
-			yy: child.screenFrame.y + child.height/2
-
-makeLinks()
+	beforeHandle = new nbs.DragHandle
+		p: child
