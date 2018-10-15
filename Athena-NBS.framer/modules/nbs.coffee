@@ -194,7 +194,6 @@ class exports.Situation extends Layer
 		exports.nodeLinks.push @nodeLine
 
 		@tri.onClick @Toggle
-		@.onDrag @UpdateLinks
 
 	Toggle: =>
 		@container.stateCycle "collapsed", "default"
@@ -202,8 +201,7 @@ class exports.Situation extends Layer
 		@nodeLine.stateCycle "collapsed", "default"
 
 
-	UpdateLinks: ->
-		@nodeLine.yy = @brick.screenFrame.y + @brick.height/2
+
 
 
 
@@ -234,6 +232,13 @@ class exports.DragHandle extends Layer
 			that.x = @.x - that.width + exports.padding + 20
 			that.y = @.y - exports.padding
 			that.bringToFront()
+			yy = that.brick.screenFrame.y + that.brick.height/2 - exports.padding
+			xx = that.brick.screenFrame.x + that.brick.width
+			that.nodeLine.html = '
+			<svg>
+			  <path d="M0 '+ "#{yy}" +' C 20 '+ "#{yy}" +' 25 '+ "#{30}" +' 45 '+ "#{30}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
+			</svg>
+			'
 
 
 
