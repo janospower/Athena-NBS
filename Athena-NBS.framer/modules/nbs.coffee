@@ -121,7 +121,7 @@ class exports.Situation extends Layer
 	constructor: (@options={}) ->
 
 		@label = new TextLayer
-			text: "Event Name"
+			text: @options.l
 			fontSize: 16
 			color: "white"
 			x: 3*exports.padding
@@ -186,8 +186,9 @@ class exports.Situation extends Layer
 
 
 		@nodeLine = new exports.NodeLines
-			parent : @
-			x: @.width - exports.padding
+			parent : @options.p
+			x: @.x + @.width - exports.padding
+			y: 2*exports.padding
 			yy: @brick.screenFrame.y + @brick.height/2 - exports.padding
 
 		exports.nodeLinks.push @nodeLine
@@ -217,12 +218,11 @@ class exports.DragHandle extends Layer
 			x: that.x + that.width - 20 - exports.padding
 			y: that.y + exports.padding
 			style:
-				"background" : "url(images/tri.svg)   no-repeat"
+				"background" : "url(images/draghandle.svg)   no-repeat"
 				"background-position":"left center"
 				"background-size" : "contain"
 
 		super @options
-		print that.x
 		@.draggable.enabled = true
 		@.draggable.constraints = {
 			x: @.x
@@ -233,6 +233,7 @@ class exports.DragHandle extends Layer
 		@.on Events.Move, ->
 			that.x = @.x - that.width + exports.padding + 20
 			that.y = @.y - exports.padding
+			that.bringToFront()
 
 
 

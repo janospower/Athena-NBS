@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>drag</title>
+    <desc>Created with Sketch.</desc>
+    <g id="drag" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group" transform="translate(7.000000, 4.000000)" fill="#D8D8D8" stroke="#FFFFFF">
+            <path d="M0.5,0.5 L5.5,0.5" id="Line-5"></path>
+            <path d="M0.5,5.5 L5.5,5.5" id="Line-5"></path>
+            <path d="M0.5,10.5 L5.5,10.5" id="Line-5"></path>
+        </g>
+    </g>
+</svg>

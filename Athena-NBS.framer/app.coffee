@@ -6,35 +6,42 @@ nbs = require "nbs"
 
 Screen.backgroundColor = nbs.primaryLight
 
+
+scrollComp = new ScrollComponent
+	width: screen.width
+	height: screen.height
+	backgroundColor: null
+	scrollHorizontal: true
+	scrollVertical: false
+	overdrag: true
+
+scrollComp.mouseWheelEnabled = true
+scrollComp.speedX = 0
+
 situations = new Layer
 	backgroundColor: null
 	size: Framer.Device.screen.size
-
+	parent: scrollComp.content
 
 beforeBricks = ["Drive to position","Use mobile device"]
 arriveBricks = ["Drive to position"]
 leaveBricks = ["Use mobile device", "Haptic feedback", "Add event listener", "Delay", "If", "Accelerate", "Control doors"]
+defaultSituations = [beforeBricks, arriveBricks, leaveBricks]
 
 
-before = new nbs.Situation
-	parent: situations
-	nodes: beforeBricks
-before.label.text = "Before Start"
+s =[]
+for child, i in defaultSituations
+	s.push new nbs.Situation
+		parent: situations
+		nodes: child
+		x: nbs.padding*2*(i+1) + i*nbs.situationWidth
+		l: "Event Name"
+		p: scrollComp.content
+	handle = new nbs.DragHandle
+		p: s[i]
+		parent: scrollComp.content
 
-arrive = new nbs.Situation
-	parent: situations
-	nodes: arriveBricks
-arrive.label.text = "Event Name:"
-
-leave = new nbs.Situation
-	parent: situations
-	nodes: leaveBricks
-leave.label.text = "On Arrive"
 
 neu = new nbs.NewSituation
 	parent: situations
-
-for child, i in situations.subLayers
-	child.x = nbs.padding*2*(i+1) + i*nbs.situationWidth
-	beforeHandle = new nbs.DragHandle
-		p: child
+	x: nbs.padding*2*(s.length+1) + s.length*nbs.situationWidth
