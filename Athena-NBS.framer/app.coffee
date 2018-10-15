@@ -40,3 +40,14 @@ for child, i in situations.subLayers
 		width: 0
 		height: 0
 	}
+
+
+nodeLinks = []
+makeLinks = ->
+	nodeLinks = []
+	for child, i in nbs.listeners
+		nodeLinks.push new nbs.NodeLines
+			x: child.screenFrame.x + child.width
+			yy: child.screenFrame.y + child.height/2
+
+makeLinks()
