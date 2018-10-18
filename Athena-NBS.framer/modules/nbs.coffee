@@ -9,6 +9,8 @@ exports.secondary = "#CC0026"
 
 exports.scrolled = 0
 
+exports.cont = null
+
 exports.listeners = []
 exports.nodeLinks = []
 
@@ -165,10 +167,29 @@ class exports.Situation extends Layer
 				parent: @container.scrollComp.content
 				title: child
 
-		bricks.push new Brick
+		exports.cont = @container
+		bricks.push @newBrick = new Brick
 			y: bricks.length*100
-			parent: @container.scrollComp.content
+			parent: exports.cont.scrollComp.content
 			title: "+ Add new brick"
+
+		das = @
+		@newBrick.onClick ->
+			brickName = prompt "Brick Name"
+			bricks.pop()
+			bricks.push new Brick
+				y: bricks.length*100
+				parent: das.container.scrollComp.content
+				title: brickName
+			das.newBrick.visible=false
+			bricks.push das.newBrick = new Brick
+				y: bricks.length*100
+				parent: das.container.scrollComp.content
+				title: "+ Add new brick"
+			if (das.container.scrollComp.content.height < 620)
+				das.container.scrollComp.height = das.container.scrollComp.content.height
+			else
+				das.container.scrollComp.height = 620
 
 		exports.listeners.push new Listener
 			parent: bricks[bricks.length-2]
@@ -303,4 +324,3 @@ class exports.NewSituation extends Layer
 
 		@newBrick.onClick ->
 			brickName = prompt "Brick Name"
-			print brickName
