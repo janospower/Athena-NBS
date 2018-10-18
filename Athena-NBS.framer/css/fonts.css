@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Apax';
+    src: local('Apax Light'), local('Apax-Light'), url('fonts/Apax-Light.ttf');
+    font-weight: 300
+}
+
+@font-face {
+    font-family: 'Apax';
+    src: local('Apax Regular'), local('Apax-Regular'),url('fonts/Apax-Regular.ttf');
+    font-weight: 400
+}
+
+@font-face {
+    font-family: 'Apax';
+    src: local('Apax Medium'), local('Apax-Medium'),url('fonts/Apax-Medium.ttf');
+    font-weight: 500
+}
+
+@font-face {
+    font-family: 'Apax';
+    src: local('Apax Bold'), local('Apax-Bold'),url('fonts/Apax-Bold.ttf');
+    font-weight: 700
+}
+

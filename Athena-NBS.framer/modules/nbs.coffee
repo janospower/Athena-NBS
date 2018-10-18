@@ -3,7 +3,8 @@ exports.situationWidth = 300
 exports.borderradius = 4
 
 exports.primary = "#00203D"
-exports.primaryLight = "#4D6377"
+exports.primaryDark = "#11151A"
+exports.primaryLight = "#2A445C"
 exports.secondary = "#CC0026"
 
 exports.listeners = []
@@ -12,7 +13,7 @@ exports.nodeLinks = []
 drawSVG = (x1,y1,x2,y2) ->
 	svg = '
 	<svg>
-		<path d="M'+ "#{x1} #{y1}" +' C '+" #{x1+((x2-x1)*0.5)} #{y1} #{x1+((x2-x1)*0.5)} #{y2} #{x2} #{y2}" +'" stroke="#CC0026" stroke-width="2" fill="none" />
+		<path d="M'+ "#{x1} #{y1}" +' C '+" #{x1+((x2-x1)*0.5)} #{y1} #{x1+((x2-x1)*0.5)} #{y2} #{x2} #{y2}" +'" stroke="#FFFFFF" stroke-width="2" fill="none" />
 	</svg>
 	'
 	return svg
@@ -46,7 +47,7 @@ class Listener extends Layer
 			backgroundColor: 'transparent'
 			borderRadius: exports.borderradius
 			borderWidth: 1
-			borderColor: exports.primary
+			borderColor: exports.primaryLight
 			width: exports.situationWidth - 2*exports.padding
 			height: 40
 			x: exports.padding
@@ -57,27 +58,27 @@ class Listener extends Layer
 		@label = new TextLayer
 			parent: @
 			text: "Event Listener"
-			fontSize: 12
-			color: "black"
-			x: exports.padding
-			y: exports.padding
+			fontSize: 14
+			color: "white"
+			point: Align.center
 
 
 class Brick extends Layer
 	constructor: (@options={}) ->
 
 		_.defaults @options,
-			backgroundColor: "#CCC"
+			backgroundColor: exports.primary
 			height: 100
 			width: exports.situationWidth
 			x: 0
 			borderWidth: 1
-			borderColor: exports.secondary
+			borderRadius: exports.borderradius/2
+			borderColor: exports.primaryLight
 
 		@label = new TextLayer
 			text: @options.title
-			fontSize: 12
-			color: "black"
+			fontSize: 14
+			color: "white"
 			x: exports.padding
 			y: exports.padding
 
@@ -128,16 +129,19 @@ class exports.Situation extends Layer
 			text: @options.l
 			fontSize: 16
 			color: "white"
+			textTransform: "uppercase"
+			fontWeight: "700"
+			letterSpacing: 2
 			x: 3*exports.padding
 			y: exports.padding
-
-
 
 		_.defaults @options,
 			backgroundColor: exports.primary
 			height: 3*exports.padding + exports.borderradius
 			width: exports.situationWidth
 			borderRadius: exports.borderradius
+			borderWidth: 1
+			borderColor: exports.primaryLight
 			x: 2*exports.padding
 			y: 2*exports.padding
 
@@ -254,6 +258,9 @@ class exports.NewSituation extends Layer
 			text: "New Situation"
 			fontSize: 16
 			color: "white"
+			textTransform: "uppercase"
+			fontWeight: "700"
+			letterSpacing: 2
 			x: 3*exports.padding
 			y: exports.padding
 
@@ -264,6 +271,8 @@ class exports.NewSituation extends Layer
 			height: 3*exports.padding + exports.borderradius
 			width: exports.situationWidth
 			borderRadius: exports.borderradius
+			borderWidth: 1
+			borderColor: exports.primaryLight
 			x: 2*exports.padding
 			y: 2*exports.padding
 

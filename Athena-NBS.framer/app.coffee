@@ -4,8 +4,10 @@ document.body.style.cursor = "auto"
 nbs = require "nbs"
 
 
-Screen.backgroundColor = nbs.primaryLight
+Screen.backgroundColor = nbs.primaryDark
 
+Framer.Defaults.Layer.style = 
+	"font-family": "'Apax'"
 
 scrollComp = new ScrollComponent
 	width: screen.width
