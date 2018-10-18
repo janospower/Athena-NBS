@@ -44,6 +44,7 @@ for child, i in defaultSituations
 		p: scrollComp.content
 	handle = new nbs.DragHandle
 		p: s[i]
+		plast: s[i-1]
 		parent: scrollComp.content
 
 

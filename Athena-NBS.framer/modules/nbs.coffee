@@ -36,6 +36,8 @@ class exports.NodeLines extends Layer
 		super @options
 
 		@x2 = @options.x2
+		@x1 = @options.x1
+		@y1 = @options.y1
 		@.states.collapsed=
 			y: 3*exports.padding
 			scaleY: 0
@@ -225,6 +227,7 @@ class exports.DragHandle extends Layer
 	constructor: (@options={}) ->
 
 		that = @options.p
+		last = @options.plast
 
 		_.defaults @options,
 			width: 20
@@ -251,8 +254,14 @@ class exports.DragHandle extends Layer
 			y1 = that.brick.screenFrame.y + that.brick.height/2 + exports.padding
 			x1 = that.brick.screenFrame.x + that.brick.width - exports.padding - exports.scrolled
 			x2 = that.nodeLine.x2
-			xx = that.brick.screenFrame.x + that.brick.width
 			that.nodeLine.html = drawSVG(x1,y1,x2,50)
+
+			if last
+				lasty2 = @.screenFrame.y + @.height/2
+				lastx2 = that.brick.screenFrame.x - exports.scrolled
+				lastx1 = last.nodeLine.x1
+				lasty1 = last.nodeLine.y1
+				last.nodeLine.html = drawSVG(lastx1,lasty1,lastx2,lasty2)
 
 
 class exports.NewSituation extends Layer
