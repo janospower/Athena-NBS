@@ -39,7 +39,7 @@ class exports.NodeLines extends Layer
 		@x1 = @options.x1
 		@y1 = @options.y1
 		@.states.collapsed=
-			y: 3*exports.padding
+			y: 0
 			scaleY: 0
 			height: 0
 			opacity: 0
@@ -235,7 +235,7 @@ class exports.DragHandle extends Layer
 			x: that.x + that.width - 20 - exports.padding
 			y: that.y + exports.padding
 			style:
-				"background" : "url(images/draghandle.svg)   no-repeat"
+				"background" : "url(images/Icons/drag.svg)   no-repeat"
 				"background-position":"left center"
 				"background-size" : "contain"
 
@@ -300,3 +300,7 @@ class exports.NewSituation extends Layer
 			y: 0
 			parent: @container
 			title: "+ Add new brick"
+
+		@newBrick.onClick ->
+			brickName = prompt "Brick Name"
+			print brickName
