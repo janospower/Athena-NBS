@@ -7,13 +7,17 @@ exports.primaryDark = "#11151A"
 exports.primaryLight = "#2A445C"
 exports.secondary = "#CC0026"
 
+exports.scrolled = 0
+
 exports.listeners = []
 exports.nodeLinks = []
 
 drawSVG = (x1,y1,x2,y2) ->
 	svg = '
 	<svg>
+		<circle cx="'+ "#{x1}" +'" cy="'+ "#{y1}" +'" r="4" stroke="none" fill="#FFFFFF" />
 		<path d="M'+ "#{x1} #{y1}" +' C '+" #{x1+((x2-x1)*0.5)} #{y1} #{x1+((x2-x1)*0.5)} #{y2} #{x2} #{y2}" +'" stroke="#FFFFFF" stroke-width="2" fill="none" />
+		<circle cx="'+ "#{x2}" +'" cy="'+ "#{y2}" +'" r="4" stroke="none" fill="#FFFFFF" />
 	</svg>
 	'
 	return svg
@@ -105,7 +109,7 @@ class Container extends Layer
 		@scrollComp = new ScrollComponent
 			parent: @
 			width: exports.situationWidth
-			backgroundColor: null
+			backgroundColor: 'transparent'
 			scrollHorizontal: false
 			overdrag: true
 
@@ -245,7 +249,7 @@ class exports.DragHandle extends Layer
 			that.y = @.y - exports.padding
 			that.bringToFront()
 			y1 = that.brick.screenFrame.y + that.brick.height/2 + exports.padding
-			x1 = that.brick.screenFrame.x + that.brick.width - exports.padding
+			x1 = that.brick.screenFrame.x + that.brick.width - exports.padding - exports.scrolled
 			x2 = that.nodeLine.x2
 			xx = that.brick.screenFrame.x + that.brick.width
 			that.nodeLine.html = drawSVG(x1,y1,x2,50)

@@ -20,11 +20,14 @@ scrollComp = new ScrollComponent
 scrollComp.mouseWheelEnabled = true
 scrollComp.speedX = 0
 
+scrollComp.onScroll ->  nbs.scrolled = scrollComp.content.x
+
 situations = new Layer
 	backgroundColor: null
 	size: Framer.Device.screen.size
 	parent: scrollComp.content
 
+situationNames = ["Call Cab", "On Arrival", "Entered Car"]
 beforeBricks = ["Drive to position","Use mobile device"]
 arriveBricks = ["Drive to position"]
 leaveBricks = ["Use mobile device", "Haptic feedback", "Add event listener", "Delay", "If", "Accelerate", "Control doors"]
@@ -37,7 +40,7 @@ for child, i in defaultSituations
 		parent: situations
 		nodes: child
 		x: nbs.padding*2*(i+1) + i*nbs.situationWidth
-		l: "Event Name"
+		l: situationNames[i]
 		p: scrollComp.content
 	handle = new nbs.DragHandle
 		p: s[i]
@@ -47,3 +50,4 @@ for child, i in defaultSituations
 neu = new nbs.NewSituation
 	parent: situations
 	x: nbs.padding*2*(s.length+1) + s.length*nbs.situationWidth
+	p: scrollComp.content
